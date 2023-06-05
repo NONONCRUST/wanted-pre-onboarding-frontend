@@ -4,7 +4,7 @@ import PATH from '../lib/constants/path'
 
 const Home = () => {
   return (
-    <div className="flex flex-col w-24">
+    <div className="flex flex-col w-28">
       <Link to={PATH.SIGN_IN} className="flex">
         <Button label="로그인" fullWidth />
       </Link>
