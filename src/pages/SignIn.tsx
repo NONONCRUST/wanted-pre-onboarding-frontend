@@ -27,12 +27,17 @@ const SignIn = () => {
       navigate(PATH.TODO)
     },
     onError: (error) => {
-      if (isAxiosError(error)) {
-        error.response?.data.statusCode === 401 &&
-          setErrorMessage(MESSAGE.ERROR.SIGN_IN_FAILED)
-      }
+      if (!isAxiosError(error)) return
+
+      error.response?.data.statusCode === 404 &&
+        setErrorMessage(error.response.data.message)
+
+      error.response?.data.statusCode === 401 &&
+        setErrorMessage(MESSAGE.ERROR.SIGN_IN_FAILED)
     },
   })
+
+  console.log(isError)
 
   const emailValid = REGEXP.EMAIL.test(email.value)
   const passwordValid = REGEXP.PASSWORD.test(password.value)
@@ -68,7 +73,7 @@ const SignIn = () => {
           errorMessage={MESSAGE.ERROR.PASSWORD_INVALID}
           validated={password.value === '' || passwordValid}
         />
-        <div className="flex flex-col relative">
+        <div className="relative flex flex-col">
           <Button
             className="mt-12"
             label="로그인"
@@ -77,12 +82,12 @@ const SignIn = () => {
             disabled={submitDisabled}
           />
           {isError && (
-            <p className="text-sm mt-2 text-red-500 absolute -bottom-6 text-center w-full">
+            <p className="absolute w-full mt-2 text-sm text-center text-red-500 -bottom-6">
               {errorMessage}
             </p>
           )}
         </div>
-        <p className="text-gray-400 text-center mt-12 text-sm">
+        <p className="mt-12 text-sm text-center text-gray-400">
           회원이 아니신가요? <LinkText to={PATH.SIGN_UP}>회원가입</LinkText>
         </p>
       </div>

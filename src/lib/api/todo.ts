@@ -5,18 +5,22 @@ import {
   UpdateTodoBody,
 } from '../../types/api/todo'
 
-export const createTodoAPI = (body: CreateTodoBody) => {
-  return axiosInstance.post('/todos', body)
+export const createTodoAPI = async (body: CreateTodoBody) => {
+  const response = await axiosInstance.post('/todos', body)
+  return response.data
 }
 
-export const getTodosAPI = () => {
-  return axiosInstance.get<GetTodosResponse>('/todos')
+export const getTodosAPI = async () => {
+  const response = await axiosInstance.get<GetTodosResponse>('/todos')
+  return response.data
 }
 
-export const updateTodoAPI = (id: number, body: UpdateTodoBody) => {
-  return axiosInstance.put(`/todos/${id}`, body)
+export const updateTodoAPI = async (id: number, body: UpdateTodoBody) => {
+  const response = await axiosInstance.put(`/todos/${id}`, body)
+  return response.data
 }
 
-export const deleteTodoAPI = (id: number) => {
-  return axiosInstance.delete(`/todos/${id}`)
+export const deleteTodoAPI = async (id: number) => {
+  const response = await axiosInstance.delete(`/todos/${id}`)
+  return response.data
 }

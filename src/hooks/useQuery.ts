@@ -1,16 +1,16 @@
-import { AxiosResponse, isAxiosError } from 'axios'
+import { isAxiosError } from 'axios'
 import { useCallback, useEffect, useState } from 'react'
 
-const useQuery = <T>(queryFn: () => Promise<AxiosResponse<T>>) => {
-  const [data, setData] = useState<T>()
+const useQuery = <TData>(queryFn: () => Promise<TData>) => {
+  const [data, setData] = useState<TData>()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
   const fetchData = useCallback(async () => {
     setLoading(true)
     try {
-      const response = await queryFn()
-      setData(response.data)
+      const data = await queryFn()
+      setData(data)
     } catch (error) {
       if (isAxiosError(error)) setError(error.message)
     } finally {

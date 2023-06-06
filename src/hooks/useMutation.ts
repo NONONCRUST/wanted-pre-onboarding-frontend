@@ -1,27 +1,26 @@
-import { AxiosResponse } from 'axios'
 import { useState } from 'react'
 
-interface params<T, Args extends any[]> {
-  mutationFn: (...args: Args) => Promise<AxiosResponse<T>>
-  onSuccess?: (data: T) => void
+interface params<TData, TVariables extends any[]> {
+  mutationFn: (...args: TVariables) => Promise<TData>
+  onSuccess?: (data: TData) => void
   onError?: (error: unknown) => void
 }
 
-const useMutation = <T, Args extends any[] = any[]>({
+const useMutation = <TData, TVariables extends any[] = any[]>({
   mutationFn,
   onSuccess,
   onError,
-}: params<T, Args>) => {
+}: params<TData, TVariables>) => {
   const [loading, setLoading] = useState(false)
   const [isError, setIsError] = useState(false)
 
-  const mutate = async (...args: Args) => {
+  const mutate = async (...args: TVariables) => {
     if (loading) return
 
     setLoading(true)
     try {
-      const response = await mutationFn(...args)
-      onSuccess && onSuccess(response.data)
+      const data = await mutationFn(...args)
+      onSuccess && onSuccess(data)
     } catch (error) {
       onError && onError(error)
       setIsError(true)
